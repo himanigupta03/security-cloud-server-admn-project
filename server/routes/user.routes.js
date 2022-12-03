@@ -12,10 +12,10 @@ router.post("/sign-in", (req, res) => {
             success: false,
             message: "Please add email or password",
             data: null
-        });
+        }); 
     }
     User.findOne({ email: email })
-        .then((savedUser) => {
+        .then(async (savedUser) => {
             if (!savedUser) {
                 return res.status(400).json({
                     success: false,
@@ -24,7 +24,9 @@ router.post("/sign-in", (req, res) => {
                 });
             }
             // check password
-            if (savedUser.password === password) {
+            let user = await User.login(email,password)
+            console.log("authenticated :" , user)
+            if (user) {
                 const token = jwt.sign({ _id: savedUser._id }, JWT_SECRET);
                 const { id, name, email } = savedUser;
                 res.json({
@@ -72,6 +74,7 @@ router.post("/sign-up", (req, res) => {
     User.findOne({ email: email })
         .then((savedUser) => {
             if (savedUser) {
+                console.log("saved user :",savedUser)
                 return res.status(400).json({
                     success: false,
                     message: "User already exists with that email.",
@@ -79,8 +82,12 @@ router.post("/sign-up", (req, res) => {
                 });
             }
 
+
+
+
             // creating a new user
             const user = new User({ name, email, password });
+            console.log("user ",user)
             user
                 .save()
                 .then((data) => {
