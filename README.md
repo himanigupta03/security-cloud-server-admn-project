@@ -1,6 +1,6 @@
 # Expense Tracker
 
-An application where we can add our daily income and express.
+An application where we can add our daily income and expense .
 If you are interested in our project, click on this Live URL
  [https://himanigupta.wmdd4950.com/](https://himanigupta.wmdd4950.com/)
 
